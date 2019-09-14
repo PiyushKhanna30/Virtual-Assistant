@@ -27,22 +27,21 @@ def result_window(event=None):
         answere="""Some error occured. 
         >Check if you have filled the field.
         >Try to use less and meaningful words."""
-
     quote = answere 
     result.insert(tkinter.END, quote)
-
     tkinter.Button(query_result_window,text="Close",command=query_result_window.destroy,font=("Comic Sans MS", 10), width = 8,bg="#808b96").place(x=310,y=350)
     query_result_window.bind('<Escape>', destroy_result_window)
 def destroy_root(event=None):
     root.destroy()
 def clear_text():
     query_input.delete(0,'end')
-
 root = tkinter.Tk()
 root.title("Virtual Assistant")
+logo=tkinter.PhotoImage(file="Virtual-Assistant.gif")
 root.minsize(400,400)
 root.maxsize(400,400)
 root.geometry("400x400")
+logo_va=tkinter.Label(root,image=logo,height=400,width=400,bg="#95a5a6").place(x=0,y=0)
 query_label=tkinter.Label(root, text="Hey! How may I help you?",font=("Comic Sans MS", 12),bg="#d0d3d4")
 query_label.place(x=0,y=100)
 query_input=tkinter.Entry(root,font=("Comic Sans MS", 12),bg="#d0d3d4")

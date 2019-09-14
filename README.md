@@ -11,3 +11,5 @@ Code refference : https://pypi.org/project/wikipedia/
 We can use some conditions for wikipedia. First to limit the number of sentences to be displayed and other is the language.
 wikipedia.summary(user_input,sentences=3)
 wikipedia.set_lang("es")
+
+Here I have added gui to python using tkinter module and used .place() for layout managing.
