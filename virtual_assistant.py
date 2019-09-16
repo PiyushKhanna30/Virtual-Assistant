@@ -1,11 +1,13 @@
 import tkinter
 import wikipedia
 import wolframalpha
+import pyttsx3
+
+engine = pyttsx3.init()
 
 def result_window(event=None):
     def destroy_result_window(event=None):
         query_result_window.destroy()
-    
     query_result_window=tkinter.Toplevel()
     query_result_window.minsize(400,400)
     query_result_window.maxsize(400,400)
@@ -18,23 +20,28 @@ def result_window(event=None):
             app_id = "******-**********"            #Your app id
             client = wolframalpha.Client(app_id)
             res = client.query(user_input)
-            answere = next(res.results).text
+            speak_this = next(res.results).text
+            answere=speak_this
             clear_text()
         except: 
+            speak_this="here is what i found"
             answere = wikipedia.summary(user_input,sentences=2)
             clear_text()
     except:
-        answere="""Some error occured. 
-        >Check if you have filled the field.
-        >Try to use less and meaningful words."""
-    quote = answere 
-    result.insert(tkinter.END, quote)
+        speak_this="""Some error occured. 
+        Check if you have filled the field.
+        Try to use less and meaningful words."""
+    result.insert(tkinter.END, answere)
+    engine.say(speak_this)  
+    engine.runAndWait()
     tkinter.Button(query_result_window,text="Close",command=query_result_window.destroy,font=("Comic Sans MS", 10), width = 8,bg="#808b96").place(x=310,y=350)
     query_result_window.bind('<Escape>', destroy_result_window)
+
 def destroy_root(event=None):
     root.destroy()
 def clear_text():
     query_input.delete(0,'end')
+
 root = tkinter.Tk()
 root.title("Virtual Assistant")
 logo=tkinter.PhotoImage(file="Virtual-Assistant.gif")
