@@ -2,9 +2,12 @@ import tkinter
 import wikipedia
 import wolframalpha
 import pyttsx3
-
+import speech_recognition as sr
 engine = pyttsx3.init()
-
+rate = engine.getProperty('rate')
+engine.setProperty('rate', 90)
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[1].id)
 def result_window(event=None):
     def destroy_result_window(event=None):
         query_result_window.destroy()
@@ -15,6 +18,18 @@ def result_window(event=None):
     result = tkinter.Text(query_result_window,height=18,width=47,bg="#d0d3d4")
     result.place(x=10,y=40)
     user_input=query_input.get()
+    # --------------------------------------
+    if (user_input==""):
+        r=sr.Recognizer()
+        with sr.Microphone() as source:
+            audio=r.listen(source)
+        try:
+            user_input=r.recognize_google(audio)
+        except (sr.UnknownValueError) :
+            print("Could not understand audio.")
+        except sr.RequestError as e:
+            print("Could not request google.")
+    # -----------------------------------------
     try:
         try:
             app_id = "******-**********"            #Your app id
@@ -32,16 +47,14 @@ def result_window(event=None):
         Check if you have filled the field.
         Try to use less and meaningful words."""
     result.insert(tkinter.END, answere)
-    engine.say(speak_this)  
+    engine.say(speak_this)
     engine.runAndWait()
     tkinter.Button(query_result_window,text="Close",command=query_result_window.destroy,font=("Comic Sans MS", 10), width = 8,bg="#808b96").place(x=310,y=350)
     query_result_window.bind('<Escape>', destroy_result_window)
-
 def destroy_root(event=None):
     root.destroy()
 def clear_text():
     query_input.delete(0,'end')
-
 root = tkinter.Tk()
 root.title("Virtual Assistant")
 logo=tkinter.PhotoImage(file="Virtual-Assistant.gif")
@@ -58,3 +71,5 @@ tkinter.Button(root,text="Search",command=result_window,font=("Comic Sans MS", 1
 root.bind('<Return>', result_window)
 root.bind('<Escape>', destroy_root)
 root.mainloop()
+
+
